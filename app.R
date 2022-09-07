@@ -5,6 +5,7 @@ dic <- left_join(read.csv("dat/Daily_Inmates_In_Custody.csv"), read.csv("dat/cha
   mutate(RACE = recode(RACE, "O" = "Other", "B" = "Black", "W" = "White", "I" = "Indian", "A" = "Asian", "U" = "Unknown"),
          GENDER = recode(GENDER, "M" = "Male", "F" = "Female"),
          AGE = ifelse(is.na(AGE), -1, AGE),
+         INMATE_STATUS_CODE = recode(INMATE_STATUS_CODE, "CS" = "City Sentenced", "CSP" = "City Sentenced", "DE" = "Pretrial Detainee", "DEP" = "Pretrial Criminal Parole", "DNS" = "State Sentenced", "DPV" = "Pretrial Technical Parole", "SCO"= "State Sentenced", "SSR" = "State Sentenced"),
          FMV = ifelse(is.na(FMV), "None", recode(FMV, "F" = "Felony", "M" = "Misdemeanor", "V" = "Violation")),
          Type = ifelse(is.na(Type), "None", Type),
          CUSTODY_LEVEL = recode(CUSTODY_LEVEL, "MIN" = "Minimum", "MED" = "Medium", "MAX" = "Maximum"))
@@ -12,33 +13,40 @@ todays.pop <- nrow(dic)
 
 ui <- fluidPage(
   titlePanel("Can You Get to 3,300?"),
-  sidebarLayout(
-    sidebarPanel(
-      selectInput('race', "Race", c("Asian", "Black", "Indian", "Other", "Unknown", "White"), multiple = T, selected = c("Asian", "Black", "Indian", "Other", "Unknown", "White")),
-      selectInput('sex', "Sex", c("Male", "Female"), multiple = T, selected = c("Male", "Female")),
-      sliderInput('age', "Age", min = 0, max = 150, c(0, 150)),
-      selectInput('fmv', "Offense", c("Felony", "Misdemeanor", "Violation"), multiple = T, selected = c("Felony", "Misdemeanor", "Violation")),
-      selectInput('type', "Type", c("Narcotics", "Sex Offense", "Violent", "Weapons", "Vehicle", "Misc", "Property"), multiple = T, selected = c("Narcotics", "Sex Offense", "Violent", "Weapons", "Vehicle", "Misc", "Property")),
-      selectInput('custody', "Custody Level", c("Minimum", "Medium", "Maximum"), multiple = T, selected = c("Minimum", "Medium", "Maximum")),
-      checkboxInput('srg', "Include Prison Gang Members", value = T),
-      checkboxInput('bradh', "Include Mental Health Evaluated", value = T),
-      actionButton("update", "Update")
-    ),
-    mainPanel(
+  fluidRow(
+    column(3, 
+           wellPanel(
+             selectInput("sentence", "Sentence", c("City Sentenced", "Pretrial Detainee", "Pretrial Criminal Parole", "Pretrial Technical Parole", "State Sentenced"), multiple = T, selected = c("City Sentenced", "Pretrial Detainee", "Pretrial Criminal Parole", "Pretrial Technical Parole", "State Sentenced")),
+             selectInput('fmv', "", c("Felony", "Misdemeanor", "Violation"), multiple = T, selected = c("Felony", "Misdemeanor", "Violation")),
+             selectInput('offense', "Offense", c("Narcotics", "Sex Offense", "Violent", "Weapons", "Vehicle", "Misc", "Property"), multiple = T, selected = c("Narcotics", "Sex Offense", "Violent", "Weapons", "Vehicle", "Misc", "Property"))
+             )
+           ),
+    column(6,
       plotOutput("hist")
+    ),
+    column(3, 
+           wellPanel(
+             selectInput('race', "Race", c("Asian", "Black", "Indian", "Other", "Unknown", "White"), multiple = T, selected = c("Asian", "Black", "Indian", "Other", "Unknown", "White")),
+             selectInput('sex', "Sex", c("Male", "Female"), multiple = T, selected = c("Male", "Female")),
+             sliderInput('age', "Age", min = 0, max = 150, c(0, 150)),
+             selectInput('custody', "Custody Level", c("Minimum", "Medium", "Maximum"), multiple = T, selected = c("Minimum", "Medium", "Maximum")),
+             checkboxInput('srg', "Include Prison Gang Members", value = T),
+             checkboxInput('bradh', "Include Mental Health Evaluated", value = T),
+           )
+    )
     )
   )
-)
 
 server <- function(input, output, session) {
   
-  dic.summary <- eventReactive(input$update, ignoreNULL = F, {
+  dic.summary <- reactive({
     new.length <- dic %>%
       filter(RACE %in% c(input$race, ""),
              GENDER %in% c(input$sex, ""),
              AGE %in% c(input$age[1]:input$age[2], -1),
+             INMATE_STATUS_CODE %in% c(input$sentence, ""),
              FMV %in% c(input$fmv, "None"),
-             Type %in% c(input$type, "None"),
+             Type %in% c(input$offense, "None"),
              CUSTODY_LEVEL %in% c(input$custody, ""),
              if(input$srg == F) {SRG_FLG != "Y"} else {SRG_FLG %in% c("Y", "N", "")},
              if(input$bradh == F) {BRADH != "Y"} else {BRADH %in% c("Y", "N", "")}
