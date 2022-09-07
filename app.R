@@ -1,7 +1,11 @@
 library(shiny)
 library(tidyverse)
 
-dic <- left_join(read.csv("dat/Daily_Inmates_In_Custody.csv"), read.csv("dat/charge features.csv"), by = c('TOP_CHARGE' = 'Code')) %>%
+#there's a trailing ' before all the codes
+#so that excel doesn't screw it up every time I open it
+#Yes, I know, a mess
+charges <- read.csv("dat/charge features.csv") %>% mutate(Code = gsub("'", "", Code))
+dic <- left_join(read.csv("dat/Daily_Inmates_In_Custody.csv"), charges, by = c('TOP_CHARGE' = 'Code')) %>%
   mutate(RACE = recode(RACE, "O" = "Other", "B" = "Black", "W" = "White", "I" = "Indian", "A" = "Asian", "U" = "Unknown"),
          GENDER = recode(GENDER, "M" = "Male", "F" = "Female"),
          AGE = ifelse(is.na(AGE), -1, AGE),
