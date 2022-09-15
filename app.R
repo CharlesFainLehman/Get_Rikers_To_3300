@@ -55,12 +55,13 @@ server <- function(input, output, session) {
              CUSTODY_LEVEL %in% c(input$custody, ""),
              if(input$srg == F) {SRG_FLG != "Y"} else {SRG_FLG %in% c("Y", "N", "")},
              if(input$bradh == F) {BRADH != "Y"} else {BRADH %in% c("Y", "N", "")}
-             ) %>%
-      nrow()
+             ) 
+    print(new.length)
+
     
     data.frame(version = factor(c("Today's Population", "Your version", "3,300"),
                           levels = c("Today's Population", "Your version", "3,300")),
-               count = c(todays.pop, new.length, 3300))
+               count = c(todays.pop, nrow(new.length), 3300))
   })
   
   output$hist <- renderPlot({
@@ -69,7 +70,6 @@ server <- function(input, output, session) {
       geom_text(aes(label = scales::comma(count, accuracy = 1), y = count + 120)) +
       scale_y_continuous(labels = scales::comma) +
       theme_minimal() + 
-	  labs(title = "It worked!") +
       theme(panel.grid = element_blank(),
             axis.title = element_blank()) 
   }, res = 96)

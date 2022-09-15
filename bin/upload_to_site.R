@@ -1,3 +1,3 @@
 library(rsconnect)
-rsconnect::setAccountInfo(name='charlesfainlehman', token='6EA6B48E0C14C5CC47C55277A75548C3', secret=commandArgs(trailingOnly=TRUE)[1])
+rsconnect::setAccountInfo(name='charlesfainlehman', token='CC92133ADD7968271212E7CA8DE1FD8A', secret=commandArgs(trailingOnly=TRUE)[1])
 rsconnect::deployApp()
