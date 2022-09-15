@@ -12,7 +12,7 @@ jobs:
         r-version: '3.5.3'
     - name: Install dependencies
       run: |
-        install.packages("rsconnect", quiet = T)
+        install.packages("rsconnect")
       shell: Rscript {0}
 #    - name: Push to site
 #      run: Rscript bin/upload_to_site.R
