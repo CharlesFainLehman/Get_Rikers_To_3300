@@ -69,6 +69,7 @@ server <- function(input, output, session) {
       geom_text(aes(label = scales::comma(count, accuracy = 1), y = count + 120)) +
       scale_y_continuous(labels = scales::comma) +
       theme_minimal() + 
+	  labs(title = "It worked!") +
       theme(panel.grid = element_blank(),
             axis.title = element_blank()) 
   }, res = 96)
