@@ -9,18 +9,15 @@ charges <- read.csv("dat/charge features.csv") %>% mutate(Code = gsub("'", "", C
 dic <- left_join(read.csv("dat/Daily_Inmates_In_Custody.csv"), charges, by = c('TOP_CHARGE' = 'Code')) %>%
   mutate(RACE = recode(RACE, "O" = "Other", "B" = "Black", "W" = "White", "I" = "Indian", "A" = "Asian", "U" = "Unknown"),
          GENDER = recode(GENDER, "M" = "Male", "F" = "Female"),
+         AGE = as.numeric(AGE),
          AGE = ifelse(is.na(AGE), -1, AGE),
          INMATE_STATUS_CODE = recode(INMATE_STATUS_CODE, "CS" = "City Sentenced", "CSP" = "City Sentenced", "DE" = "Pretrial Detainee", "DEP" = "Pretrial Criminal Parole", "DNS" = "State Sentenced", "DPV" = "Pretrial Technical Parole", "SCO"= "State Sentenced", "SSR" = "State Sentenced"),
+         FMV = as.character(FMV),
          FMV = ifelse(is.na(FMV), "None", recode(FMV, "F" = "Felony", "M" = "Misdemeanor", "V" = "Violation")),
          Type = as.character(Type),
-         Type = ifelse(is.na(Type), "None", as.character(Type)),
+         Type = ifelse(is.na(Type), "None", Type),
          CUSTODY_LEVEL = recode(CUSTODY_LEVEL, "MIN" = "Minimum", "MED" = "Medium", "MAX" = "Maximum"))
 todays.pop <- nrow(dic)
-
-print("Unique Types in Charges: ")
-pull(charges, Type) %>% unique() %>% print()
-print("Unique Types in dic: ")
-pull(dic, Type) %>% unique() %>% print()
 
 ui <- fluidPage(
   titlePanel("Can You Get to 3,300?"),
