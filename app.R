@@ -22,7 +22,8 @@ ui <- fluidPage(
            wellPanel(
              selectInput("sentence", "Sentence", c("City Sentenced", "Pretrial Detainee", "Pretrial Criminal Parole", "Pretrial Technical Parole", "State Sentenced"), multiple = T, selected = c("City Sentenced", "Pretrial Detainee", "Pretrial Criminal Parole", "Pretrial Technical Parole", "State Sentenced")),
              selectInput('fmv', "", c("Felony", "Misdemeanor", "Violation"), multiple = T, selected = c("Felony", "Misdemeanor", "Violation")),
-             selectInput('offense', "Offense", c("Narcotics", "Sex Offense", "Violent", "Weapons", "Vehicle", "Misc", "Property"), multiple = T, selected = c("Narcotics", "Sex Offense", "Violent", "Weapons", "Vehicle", "Misc", "Property"))
+             selectInput('offense', "Offense", c("Narcotics", "Sex Offense", "Violent", "Weapons", "Vehicle", "Misc", "Property"), multiple = T, selected = c("Narcotics", "Sex Offense", "Violent", "Weapons", "Vehicle", "Misc", "Property")),
+             selectInput('custody', "Custody Level", c("Minimum", "Medium", "Maximum"), multiple = T, selected = c("Minimum", "Medium", "Maximum"))
              )
            ),
     column(6,
@@ -33,7 +34,6 @@ ui <- fluidPage(
              selectInput('race', "Race", c("Asian", "Black", "Indian", "Other", "Unknown", "White"), multiple = T, selected = c("Asian", "Black", "Indian", "Other", "Unknown", "White")),
              selectInput('sex', "Sex", c("Male", "Female"), multiple = T, selected = c("Male", "Female")),
              sliderInput('age', "Age", min = 0, max = 150, c(0, 150)),
-             selectInput('custody', "Custody Level", c("Minimum", "Medium", "Maximum"), multiple = T, selected = c("Minimum", "Medium", "Maximum")),
              checkboxInput('srg', "Include Prison Gang Members", value = T),
              checkboxInput('bradh', "Include Mental Health Evaluated", value = T),
            )
