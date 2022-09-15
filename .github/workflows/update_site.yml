@@ -1,7 +1,7 @@
 name: update_site
 on: [push]
 env: 
-    secret: ${{ secrets.ShinyApps_Secret_Token }}
+    SECRET: ${{ secrets.SHINYAPPS_SECRET_TOKEN }}
 
 jobs:
   build:
