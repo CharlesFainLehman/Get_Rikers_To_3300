@@ -16,6 +16,8 @@ dic <- left_join(read.csv("dat/Daily_Inmates_In_Custody.csv"), charges, by = c('
          CUSTODY_LEVEL = recode(CUSTODY_LEVEL, "MIN" = "Minimum", "MED" = "Medium", "MAX" = "Maximum"))
 todays.pop <- nrow(dic)
 
+pull(dic, Type) %>% unique() %>% print()
+
 ui <- fluidPage(
   titlePanel("Can You Get to 3,300?"),
   fluidRow(
@@ -45,6 +47,9 @@ ui <- fluidPage(
 server <- function(input, output, session) {
   
   dic.summary <- reactive({
+    
+    print(input$offense)
+    
     new.length <- dic %>%
       filter(RACE %in% c(input$race, ""),
              GENDER %in% c(input$sex, ""),
@@ -56,7 +61,8 @@ server <- function(input, output, session) {
              if(input$srg == F) {SRG_FLG != "Y"} else {SRG_FLG %in% c("Y", "N", "")},
              if(input$bradh == F) {BRADH != "Y"} else {BRADH %in% c("Y", "N", "")}
              ) 
-    print(new.length)
+      
+    pull(new.length, Type) %>% unique() %>% print()
 
     
     data.frame(version = factor(c("Today's Population", "Your version", "3,300"),
