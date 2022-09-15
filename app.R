@@ -16,6 +16,9 @@ dic <- left_join(read.csv("dat/Daily_Inmates_In_Custody.csv"), charges, by = c('
          CUSTODY_LEVEL = recode(CUSTODY_LEVEL, "MIN" = "Minimum", "MED" = "Medium", "MAX" = "Maximum"))
 todays.pop <- nrow(dic)
 
+print("Unique Types in Charges: ")
+pull(charges, Type) %>% unique() %>% print()
+print("Unique Types in dic: ")
 pull(dic, Type) %>% unique() %>% print()
 
 ui <- fluidPage(
@@ -47,9 +50,7 @@ ui <- fluidPage(
 server <- function(input, output, session) {
   
   dic.summary <- reactive({
-    
-    print(input$offense)
-    
+
     new.length <- dic %>%
       filter(RACE %in% c(input$race, ""),
              GENDER %in% c(input$sex, ""),
@@ -60,14 +61,12 @@ server <- function(input, output, session) {
              CUSTODY_LEVEL %in% c(input$custody, ""),
              if(input$srg == F) {SRG_FLG != "Y"} else {SRG_FLG %in% c("Y", "N", "")},
              if(input$bradh == F) {BRADH != "Y"} else {BRADH %in% c("Y", "N", "")}
-             ) 
-      
-    pull(new.length, Type) %>% unique() %>% print()
-
+             ) %>%
+      nrow()
     
     data.frame(version = factor(c("Today's Population", "Your version", "3,300"),
                           levels = c("Today's Population", "Your version", "3,300")),
-               count = c(todays.pop, nrow(new.length), 3300))
+               count = c(todays.pop, new.length, 3300))
   })
   
   output$hist <- renderPlot({
