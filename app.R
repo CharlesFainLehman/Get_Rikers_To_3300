@@ -1,5 +1,6 @@
 library(shiny)
-library(tidyverse)
+library(dplyr)
+library(ggplot2)
 
 #there's a trailing ' before all the codes
 #so that excel doesn't screw it up every time I open it
