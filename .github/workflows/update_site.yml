@@ -11,7 +11,7 @@ jobs:
       with:
         r-version: '3.5.3'
     - name: Install Curl
-	  run: sudo apt-get install libcurl4-openssl-dev
+      run: sudo apt-get install libcurl4-openssl-dev
     - name: Install R libraries
       run: |
         install.packages("rsconnect")
