@@ -3,7 +3,7 @@ on: [push]
 
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v2
@@ -14,5 +14,5 @@ jobs:
       run: |
         install.packages("rsconnect", quiet = T)
       shell: Rscript {0}
-    - name: Push to site
-      run: Rscript bin/upload_to_site.R
+#    - name: Push to site
+#      run: Rscript bin/upload_to_site.R
