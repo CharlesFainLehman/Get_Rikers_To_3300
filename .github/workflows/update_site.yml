@@ -16,5 +16,5 @@ jobs:
       run: |
         install.packages("rsconnect")
       shell: Rscript {0}
-#    - name: Push to site
-#      run: Rscript bin/upload_to_site.R
+    - name: Push to site
+      run: Rscript bin/upload_to_site.R
