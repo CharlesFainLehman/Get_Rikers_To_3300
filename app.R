@@ -12,7 +12,8 @@ dic <- left_join(read.csv("dat/Daily_Inmates_In_Custody.csv"), charges, by = c('
          AGE = ifelse(is.na(AGE), -1, AGE),
          INMATE_STATUS_CODE = recode(INMATE_STATUS_CODE, "CS" = "City Sentenced", "CSP" = "City Sentenced", "DE" = "Pretrial Detainee", "DEP" = "Pretrial Criminal Parole", "DNS" = "State Sentenced", "DPV" = "Pretrial Technical Parole", "SCO"= "State Sentenced", "SSR" = "State Sentenced"),
          FMV = ifelse(is.na(FMV), "None", recode(FMV, "F" = "Felony", "M" = "Misdemeanor", "V" = "Violation")),
-         Type = ifelse(is.na(Type), "None", Type),
+         Type = as.character(Type),
+         Type = ifelse(is.na(Type), "None", as.character(Type)),
          CUSTODY_LEVEL = recode(CUSTODY_LEVEL, "MIN" = "Minimum", "MED" = "Medium", "MAX" = "Maximum"))
 todays.pop <- nrow(dic)
 
