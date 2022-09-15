@@ -19,4 +19,4 @@ jobs:
 #        install.packages(c("rsconnect", "shiny", "dplyr", "ggplot2"))
 #      shell: Rscript {0}
     - name: Push to site
-      run: Rscript bin/upload_to_site.R 
+      run: Rscript bin/upload_to_site.R "$SECRET"
