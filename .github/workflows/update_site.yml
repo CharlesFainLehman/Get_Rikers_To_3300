@@ -21,4 +21,4 @@ jobs:
         install.packages(c("rsconnect", "shiny", "tidyverse"))
       shell: Rscript {0}
     - name: Push to site
-      run: Rscript bin/upload_to_site.R "$SECRET"
+      run: Rscript bin/upload_to_site.R
