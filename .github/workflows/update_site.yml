@@ -13,7 +13,7 @@ jobs:
       with:
         r-version: '3.5.3'
     - name: test
-      shell: echo "$SECRET"
+      run: echo "$SECRET"
 #    - name: Install Curl
 #      run: sudo apt-get install libcurl4-openssl-dev
 #    - name: Install R libraries
