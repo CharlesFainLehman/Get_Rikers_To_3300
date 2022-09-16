@@ -1,7 +1,11 @@
-#This is the one that updates the site any time someone pushes manually to the main repo
+#This is the one that updates the site every time the new daily file is downloaded
 
 name: update_site
-on: [push]
+on:
+  workflow_run:
+    workflows: ["fetch_daily"]
+    types:
+      - completed
 env: 
     SECRET: ${{ secrets.SHINYAPPS_SECRET_TOKEN }}
 
