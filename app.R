@@ -64,8 +64,8 @@ server <- function(input, output, session) {
              ) %>%
       nrow()
     
-    data.frame(version = factor(c("Today's Population", "Your version", "3,300"),
-                          levels = c("Today's Population", "Your version", "3,300")),
+    data.frame(version = factor(c("Today's population", "Your version", "3,300"),
+                          levels = c("Today's population", "Your version", "3,300")),
                count = c(todays.pop, new.length, 3300))
   })
   
