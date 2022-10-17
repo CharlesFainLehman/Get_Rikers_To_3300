@@ -22,30 +22,37 @@ dic <- read.csv("dat/Daily_Inmates_In_Custody.csv") %>%
 todays.pop <- nrow(dic)
 
 ui <- fluidPage(
-  titlePanel("Can You Get to 3,300?"),
-  fluidRow(
-    column(3, 
-           wellPanel(
-             selectInput("sentence", "Sentence", c("City Sentenced", "Pretrial Detainee", "Pretrial Criminal Parole", "Pretrial Technical Parole", "State Sentenced"), multiple = T, selected = c("City Sentenced", "Pretrial Detainee", "Pretrial Criminal Parole", "Pretrial Technical Parole", "State Sentenced")),
-             selectInput('fmv', "", c("Felony", "Misdemeanor", "Violation"), multiple = T, selected = c("Felony", "Misdemeanor", "Violation")),
-             selectInput('offense', "Offense", c("Narcotics", "Sex Offense", "Violent", "Weapons", "Vehicle", "Misc", "Property"), multiple = T, selected = c("Narcotics", "Sex Offense", "Violent", "Weapons", "Vehicle", "Misc", "Property")),
-             selectInput('custody', "Custody Level", c("Minimum", "Medium", "Maximum"), multiple = T, selected = c("Minimum", "Medium", "Maximum"))
-             )
+    column(12, 
+           plotOutput("hist"),
+           hr(),
+           h4("Filters:"),
+           tabsetPanel(
+               tabPanel("Charge",
+                        br(),
+                 checkboxGroupInput('fmv', "Charge Severity", c("Felony", "Misdemeanor", "Violation"), inline = T,   selected = c("Felony", "Misdemeanor", "Violation")),
+                 checkboxGroupInput('offense', "Charge Type", c("Narcotics", "Sex Offense", "Violent", "Weapons", "Vehicle", "Misc", "Property"), inline = T, selected = c("Narcotics", "Sex Offense", "Violent", "Weapons", "Vehicle", "Misc", "Property"))
+                 ),
+               tabPanel("Detention", 
+                        br(),
+                 checkboxGroupInput("sentence", "Detention Status", c("City Sentenced", "Pretrial Detainee",   "Pretrial Criminal Parole", "Pretrial Technical Parole", "State Sentenced"), inline = T,   selected = c("City Sentenced", "Pretrial Detainee", "Pretrial Criminal Parole", "Pretrial Technical Parole", "State Sentenced")),
+                 checkboxGroupInput('custody', "Custody Level", c("Minimum", "Medium", "Maximum"), inline = T, selected = c("Minimum", "Medium", "Maximum"))
+               ),
+               tabPanel("Demographics", 
+                        br(),
+                 checkboxGroupInput('race', "Race", c("Asian", "Black", "Indian", "Other", "Unknown", "White"), selected = c("Asian", "Black", "Indian", "Other", "Unknown", "White"), inline = T),
+                 checkboxGroupInput('sex', "Sex", c("Male", "Female"), selected = c("Male", "Female"), inline = T),
+                 sliderInput('age', "Age", min = 0, max = 150, c(0, 150))
+                 ),
+               tabPanel("Misc.", 
+                        br(),
+                 checkboxInput('bradh', "Mental Health Evaluated", value = T),
+                 checkboxInput('srg', "Prison Gang Members", value = T) 
+               )
            ),
-    column(6,
-      plotOutput("hist")
-    ),
-    column(3, 
-           wellPanel(
-             selectInput('race', "Race", c("Asian", "Black", "Indian", "Other", "Unknown", "White"), multiple = T, selected = c("Asian", "Black", "Indian", "Other", "Unknown", "White")),
-             selectInput('sex', "Sex", c("Male", "Female"), multiple = T, selected = c("Male", "Female")),
-             sliderInput('age', "Age", min = 0, max = 150, c(0, 150)),
-             checkboxInput('srg', "Include Prison Gang Members", value = T),
-             checkboxInput('bradh', "Include Mental Health Evaluated", value = T),
-           )
+           hr(),
+           tags$em("Notes: Data reflects yesterday's population, are updated daily. Data do not distinguish Hispanic ethnicity.")
     )
-    )
-  )
+)
 
 server <- function(input, output, session) {
   
@@ -80,4 +87,4 @@ server <- function(input, output, session) {
   }, res = 96)
 }
 
-shinyApp(ui, server)
+shinyApp(ui, server, options = list(port = 5649))
