@@ -1,7 +1,8 @@
 #This is the one that updates the site any time someone pushes manually to the main repo
 
-name: update_site
-on: [push]
+name: update_site_on_push
+#on: [push]
+on: workflow_dispatch
 env: 
     SECRET: ${{ secrets.SHINYAPPS_SECRET_TOKEN }}
 
