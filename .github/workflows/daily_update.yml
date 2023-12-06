@@ -6,6 +6,8 @@ on:
     workflows: ["fetch_daily"]
     types:
       - completed
+ workflow_dispatch:
+ 
 env: 
     SECRET: ${{ secrets.SHINYAPPS_SECRET_TOKEN }}
 
