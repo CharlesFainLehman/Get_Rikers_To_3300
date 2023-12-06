@@ -1,11 +1,11 @@
 #This is the one that updates the site every time the new daily file is downloaded
 
 name: update_site
-on:
-  workflow_run:
-    workflows: ["fetch_daily"]
-    types:
-      - completed
+#on:
+#  workflow_run:
+#    workflows: ["fetch_daily"]
+#    types:
+#      - completed
 
 on: workflow_dispatch
  
