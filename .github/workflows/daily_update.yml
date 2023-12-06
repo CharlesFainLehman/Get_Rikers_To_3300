@@ -25,10 +25,10 @@ jobs:
       with:
         cache-version: 2
         extra-packages: |
-        any::rsconnect
-        any::shiny
-        any::dplyr
-        any::ggplot2
+          any::rsconnect
+          any::shiny
+          any::dplyr
+          any::ggplot2
     - name: Install Curl
       run: sudo apt-get install libcurl4-openssl-dev
     #- name: Install R libraries
