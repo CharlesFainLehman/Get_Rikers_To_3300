@@ -1,6 +1,6 @@
 #This is the one that updates the site every time the new daily file is downloaded
 
-name: update_site
+name: daily_update
 #on:
 #  workflow_run:
 #    workflows: ["fetch_daily"]
