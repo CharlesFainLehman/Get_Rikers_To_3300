@@ -30,10 +30,11 @@ jobs:
     - name: adding new file
       run: |
         git config --local user.name  "${{ github.actor }}"
+        git config --local user.email "clehman@manhattan.institute"
         git add -A
         git commit -m "Updating daily file"
     - name: Push changes  # push the output folder to your repo
       uses: ad-m/github-push-action@master
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
+        github_token: ${{ secrets.WORKFLOW_TOKEN }}
         force: true
