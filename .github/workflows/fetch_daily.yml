@@ -6,7 +6,10 @@ name: fetch_daily
 
 on:
   schedule:
-    - cron: "25 4 * * *" 
+    - cron: "25 4 * * *"
+
+permissions:
+  contents: write
 
 jobs:
   build:
@@ -21,13 +24,13 @@ jobs:
         cache: 'pip'
     - name: Install dependencies
       run: |
-        python -m pip install --upgrade pip pandas
+        python -m pip install --upgrade pip
         pip install -r ./bin/requirements.txt
     - name: execute fetch script
-      run: |
-        python ./bin/fetch_dic.py
-        ls
-    - name: adding new file
+      env:
+        SOCRATA_APP_TOKEN: ${{ secrets.SOCRATA_APP_TOKEN }}
+      run: python ./bin/fetch_dic.py
+    - name: commit and push new file
       run: |
         git config --local user.name  ${{ github.actor }}
         git config --local user.email "${{ github.actor }}@users.noreply.github.com"
@@ -35,8 +38,4 @@ jobs:
         # the upstream dataset isn't always refreshed by the time this runs;
         # an unchanged file is not an error, so only commit when there's something new
         git diff --staged --quiet || git commit -m "Updating daily file"
-    - name: Push changes  # push the output folder to your repo
-      uses: ad-m/github-push-action@master
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        force: true
+        git push
