@@ -5,8 +5,15 @@ name: fetch_daily
 #on: [push]
 
 on:
+  workflow_dispatch:   # lets you force a fetch by hand from the Actions tab
   schedule:
-    - cron: "25 4 * * *"
+    # DOC refreshes the Socrata dataset in the afternoon, New York time, at an hour
+    # that varies from day to day. Fetch after that refresh and again overnight as
+    # a catch-up (GitHub also tends to start scheduled runs hours late). A run only
+    # commits, and so only triggers a deploy, when the file actually changed.
+    - cron: "30 20 * * *"   # 4:30 pm EDT / 3:30 pm EST
+    - cron: "30 23 * * *"   # 7:30 pm EDT / 6:30 pm EST
+    - cron: "25 4 * * *"    # 12:25 am EDT / 11:25 pm EST, the original schedule
 
 permissions:
   contents: write

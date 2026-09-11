@@ -58,7 +58,7 @@ ui <- fluidPage(
                )
            ),
            hr(),
-           tags$em("Notes: Data reflects yesterday's population, are updated daily. Data do not distinguish Hispanic ethnicity. Records missing a value for a field always pass that field's filters.")
+           tags$em("Notes: Data reflect the Department of Correction's most recent daily snapshot and are updated daily. Data do not distinguish Hispanic ethnicity. Records missing a value for a field always pass that field's filters.")
     )
 )
 
