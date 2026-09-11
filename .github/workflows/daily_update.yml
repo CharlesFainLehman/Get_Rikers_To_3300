@@ -14,8 +14,6 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
-    # a stalled shinyapps.io deploy task otherwise keeps this job alive for a full hour
-    timeout-minutes: 30
     # only deploy if the fetch actually succeeded; otherwise we'd push stale data
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
 

@@ -10,8 +10,6 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
-    # a stalled shinyapps.io deploy task otherwise keeps this job alive for a full hour
-    timeout-minutes: 30
 
     steps:
     - uses: actions/checkout@v5
