@@ -14,6 +14,8 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
+    # a stalled shinyapps.io deploy task otherwise keeps this job alive for a full hour
+    timeout-minutes: 30
     # only deploy if the fetch actually succeeded; otherwise we'd push stale data
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
 
@@ -35,7 +37,9 @@ jobs:
       run: sudo apt-get install libcurl4-openssl-dev
     - name: Install R libraries
       run: |
-        install.packages(c("rsconnect", "shiny", "dplyr", "ggplot2", "lifecycle", "scales"), dependencies=TRUE)
+        # the default (Depends/Imports/LinkingTo) is all the app needs; dependencies=TRUE
+        # also pulled in Suggests such as sf, which needs GDAL and fails to build here
+        install.packages(c("rsconnect", "shiny", "dplyr", "ggplot2", "lifecycle", "scales"))
       shell: Rscript {0}
     - name: Push to site
       run: Rscript bin/upload_to_site.R "$TOKEN" "$SECRET"
